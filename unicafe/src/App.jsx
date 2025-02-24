@@ -53,7 +53,7 @@
 
 // const StaticLine = ({text, value, all}) => {
 //   const averageScore = all === 0 ? 0 : value / all
-  
+
 //   return (
 //     <tr>
 //       <td>{text}</td>
@@ -72,7 +72,7 @@
 //       <h1>give feedback</h1>
 //       <Button reviewValue={good} setReview={setGood} review="good" />
 //       <Button reviewValue={neutral} setReview={setNeutral} review="neutral" />
-//       <Button reviewValue={bad} setReview={setBad} review="bad" />      
+//       <Button reviewValue={bad} setReview={setBad} review="bad" />
 //       <h1>statistics</h1>
 
 //       <table>
@@ -93,7 +93,7 @@ import { useState } from 'react'
 
 const Button = ({anecdotes, setSelected}) => {
   const getRandomIndex = () => Math.floor(Math.random() * anecdotes.length)
-  
+
   return (
     <button onClick={() => setSelected(getRandomIndex())}>
       next anecdote
@@ -124,7 +124,7 @@ const App = () => {
     'Programming without an extremely heavy use of console.log is same as if a doctor would refuse to use x-rays or blood tests when diagnosing patients.',
     'The only way to go fast, is to go well.'
   ]
-   
+
   const [selected, setSelected] = useState(0)
   const [votes, setVotes] = useState(new Array(anecdotes.length).fill(0))
   const maxVotes = Math.max(...votes)
