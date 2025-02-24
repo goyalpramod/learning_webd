@@ -1,4 +1,7 @@
 import { useState } from 'react'
+import { Filter } from './components/Filter'
+import { PersonForm } from './components/PersonForm'
+import { Persons } from './components/Persons'
 
 const App = () => {
   const [persons, setPersons] = useState([
@@ -9,12 +12,15 @@ const App = () => {
   ])
   const [newName, setNewName] = useState('a new name....')
   const [newNumber, setNewNumber] = useState('a new number....')
+  
   const handleNewName = (event) => {
     setNewName(event.target.value)
   }
+  
   const handleNewNumber = (event) => {
     setNewNumber(event.target.value)
   }
+  
   const addPerson = (event) => {
     event.preventDefault()
     let names = persons.map(person=> person.name)
@@ -31,9 +37,11 @@ const App = () => {
   }
 
   const [searchName, setSearchName] = useState('')
+  
   const personsToShow = searchName === ''
   ? []
   : persons.filter(person => person.name.toLowerCase().includes(searchName.toLowerCase()))
+  
   const handleSearchName = (event) => {
     setSearchName(event.target.value)
   }
@@ -41,36 +49,14 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>
-        filter shown with: <input
-        value={searchName}
-        onChange={handleSearchName}
-        />
-        {personsToShow.map(person =>
-          <div key={person.name}>{person.name}</div>
-        )}
-      </div>
+      < Filter filter={searchName} handleFilterChange={handleSearchName} personsToShow={personsToShow} />
 
       <form>
         <h3>Add a new person</h3>
-        <div>
-          name: <input 
-          value={newName}
-          onChange={handleNewName}
-          />
-          number: <input 
-          value={newNumber}
-          onChange={handleNewNumber}
-          />
-        </div>
-        <div>
-          <button type="submit" onClick={addPerson}>add</button>
-        </div>
+        < PersonForm newName={newName} handleNewName={handleNewName} newNumber={newNumber} handleNewNumber={handleNewNumber} addPerson={addPerson} />
       </form>
       <h2>Numbers</h2>
-        {persons.map(person => 
-          <div key={person.name}>{person.name} {person.number !== undefined ? person.number : 'No number'}</div>
-        )}
+        < Persons personsToShow={persons} />
     </div>
   )
 }
