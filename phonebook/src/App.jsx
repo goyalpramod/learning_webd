@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react'
 import { Filter } from './components/Filter'
 import { PersonForm } from './components/PersonForm'
 import { Persons } from './components/Persons'
+import { Notification } from './components/Notification'
 import axios from 'axios'
+import './index.css'
 import personService from './services/persons'
 
 const App = () => {
   const [persons, setPersons] = useState([])
   const [newName, setNewName] = useState('a new name....')
   const [newNumber, setNewNumber] = useState('a new number....')
+  const [eventChange, setEventChange] = useState('')
   
   const handleNewName = (event) => {
     setNewName(event.target.value)
@@ -44,6 +47,12 @@ const App = () => {
         setNewNumber('') 
         console.log(response);
   })
+  .then(() => {
+    setEventChange('Person added')
+    setTimeout(() => {
+      setEventChange('')
+    }, 5000)
+  })
 }
 
   const [searchName, setSearchName] = useState('')
@@ -67,7 +76,13 @@ const App = () => {
     personService.updateNumber(id, newObject)
       .then(response => {
         setPersons(persons.map(person => person.id !== id ? person : response))
-      })
+      }).then(() => {
+        setEventChange('Number updated')
+        setTimeout(() => {
+          setEventChange('')
+        }, 5000)
+      }
+      )
   }
 
   const handleDelete = (id) => {
@@ -77,6 +92,11 @@ const App = () => {
       personService.deletePerson(id)
         .then(response => {
           setPersons(persons.filter(p => p.id !== id))
+        }).catch(error => {
+          setEventChange(`Information of ${person.name} has already been removed from server`)
+          setTimeout(() => {
+            setEventChange('')
+          }, 5000)
         })
     }
   }
@@ -84,6 +104,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification event={eventChange} />
       < Filter filter={searchName} handleFilterChange={handleSearchName} personsToShow={personsToShow} />
 
       <form>
