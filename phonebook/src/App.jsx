@@ -86,7 +86,8 @@ const App = () => {
   }
 
   const handleDelete = (id) => {
-    console.log("this is the id being passed " + id);
+    // id.toString()
+    console.log("this is the id being passed " + JSON.stringify(id, null, 2));
     const person = persons.find(p => p.id === id)
     if (window.confirm(`Delete ${person.name} ?`)) {
       personService.deletePerson(id)
